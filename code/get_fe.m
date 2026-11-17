@@ -3,7 +3,7 @@
 % --------------------------------------------------------------------------------
 
 %values from Doyle & Turner, Acta Cryst. 24, 390.
-function y=fe(const,diff,elem,s)
+function y=get_fe(const,diff,elem,s)
     fac=1+diff.EKeV/const.m0c2;
    
     a=zeros(4,1);b=zeros(4,1);

@@ -28,19 +28,19 @@ thick=                      100;    %default thickness
 
 %% Experiments <- Input
 expt1=                              Expt('Experiment 1');
-%expt1.filename=                     "E:\Documents\MATLAB\ediff\data\3_7191_1PED_A_5_ext.txt";%3-7192-1-A0.txt";%3-7192-1-A0_1.txt";%3-7191-2-4-13_2.txt";%";%data file             
-%expt1.filename=                     "E:\Documents\MATLAB\ediff\data\3_7191_1PED_A_5_ext.txt";%3-7192-1-A0.txt";%3-7192-1-A0_1.txt";%3-7191-2-4-13_2.txt";%";%data file             
-expt1.filename=                     "E:\Documents\MATLAB\ediff\data\3-7192-1-A0.txt";             
-%expt1.filename=                     "E:\Documents\MATLAB\ediff\data\3-7191-2-4-13_2.txt";             
-%expt1.filename=                     "E:\Documents\MATLAB\ediff\data\3_7191_1PED_A_5_ext.txt";%3-7192-1-A0.txt";%3-7192-1-A0_1.txt";%3-7191-2-4-13_2.txt";%";%data file             
-%expt1.filename=                     "E:\Documents\MATLAB\ediff\data\3_7191_1PED_A_5_ext.txt";%3-7192-1-A0.txt";%3-7192-1-A0_1.txt";%3-7191-2-4-13_2.txt";%";%data file             
+%expt1.filename=                     "E:\Documents\MATLAB\ediff\data\3_7191_1PED_A_5_ext.txt";%3-7192-1-A0.txt";%3-7192-1-A0_1.txt";%3-7191-2-4-13_2.txt";%";%data file
+%expt1.filename=                     "E:\Documents\MATLAB\ediff\data\3_7191_1PED_A_5_ext.txt";%3-7192-1-A0.txt";%3-7192-1-A0_1.txt";%3-7191-2-4-13_2.txt";%";%data file
+expt1.filename=                     fullfile(fileparts(mfilename('fullpath')),'..','data','3-7192-1-A0.txt');
+%expt1.filename=                     "E:\Documents\MATLAB\ediff\data\3-7191-2-4-13_2.txt";
+%expt1.filename=                     "E:\Documents\MATLAB\ediff\data\3_7191_1PED_A_5_ext.txt";%3-7192-1-A0.txt";%3-7192-1-A0_1.txt";%3-7191-2-4-13_2.txt";%";%data file
+%expt1.filename=                     "E:\Documents\MATLAB\ediff\data\3_7191_1PED_A_5_ext.txt";%3-7192-1-A0.txt";%3-7192-1-A0_1.txt";%3-7191-2-4-13_2.txt";%";%data file
 expt1.doPlot=                       doPlotExpt;%
 expt1.selectData=                   false;
 expt1.balanceIntens=                false;
 expt1.includePairDiffError=         true;
 %{
 expt2=                      Expt('Experiment 2');
-expt2.filename=             "E:\Documents\MATLAB\ediff\data\3-7191-A5_1.txt";%data file             
+expt2.filename=             "E:\Documents\MATLAB\ediff\data\3-7191-A5_1.txt";%data file
 expt2.doPlot=               doPlotExpt;%
 expt2.selectData=           false;
 %}
@@ -115,7 +115,7 @@ region1.hklXV=              [-2 2 0]';%X-drection, specified by RLV<-Input
 region1.addDomain(ordR1,0.5);%.addDomain(ordL1,0.5);%.addDomain(matrix1,0.3);
 
 %% Simulations <- Input
-sim1=                       Sim('Simulation 1');   
+sim1=                       Sim('Simulation 1');
 sim1.gMax=                  16/a;%(1/nm) largest g to consider
 sim1.sgMax=                 0.01;%(1/nm) always include beam in diagonalization if |sg|<sgMax
 sim1.invwMin=               0.002;%include as perturbation if |sg|>sgMax and 1/|sg*Xsig|>invwMin
@@ -182,7 +182,7 @@ proj.sweepL=                {
                           	{'eta';'AlInP variant R';(0.0:etaMax/25:etaMax)'}
                            	%{'volume';'Region 1';'AlInP variant R';10.^(-2:3/30:2)'}
                          	};
-                    
+
 
 proj.sweepParL=             {
                             %{'thickness';'Region 1'}
@@ -198,12 +198,12 @@ proj.nIters=                 10;
 proj.report=                true;
 proj.init();
 
-%sim1.getIntensPrecL(const);
-%{
+sim1.getIntensPrecL(const);
+
 fit1.adjustWeightL_byPhase(matrix,10,false);
 fit1.adjustWeightL_byRefL([[0 0 0]],0.1,true);
 res=proj.fit();
-%}
+
 %res=proj.sweep();
 %{
 figure

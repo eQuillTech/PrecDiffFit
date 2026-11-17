@@ -843,7 +843,7 @@ classdef Proj<handle
         
         %
         function proj=reportVals0(proj,sLabel,redX2,varValV)
-            sRes=sLabel+compose(": reduced X^2 = %10.1f",redX2);sFormat="%s";
+            sRes={[sLabel compose(": reduced X^2 = %10.1f",redX2)]};sFormat="%s";
             nVar=size(varValV,1);
             for iVar=1:nVar
                 resV=[varValV(iVar)];
@@ -852,28 +852,28 @@ classdef Proj<handle
                 switch info.type
                     case 1
                         sResP=info.region.name;
-                        sResP=sResP+compose(": thick (nm) = %5.3f",resV);
+                        sResP=[sResP compose(": thick (nm) = %5.3f",resV)];
                         
                     case 2
                         sResP=info.phase.name;
-                        sResP=sResP+compose(": eta = %8.6f",resV);
+                        sResP=[sResP compose(": eta = %8.6f",resV)];
                         
                     case 3%'volume fraction'
-                        sResP=info.domain.region.name+", "+info.domain.phase.name;
-                        sResP=sResP+compose(": volFrac = %8.6f",resV);
+                        sResP=[char(info.domain.region.name) ", " char(info.domain.phase.name)];
+                        sResP=[sResP compose(": volFrac = %8.6f",resV)];
                         
                     case 4%'eta net'
                         sResP=compose("net: eta = %8.6f",resV);
                 end
-                sRes=[sRes sResP];
-                sFormat=sFormat+"\n%s";
+                sRes{end+1}=sResP;
+                sFormat=[sFormat "\n%s"];
             end
-            sprintf(sFormat,sRes)
+            sprintf(sFormat,sRes{:})
         end
         
         %
         function proj=reportVals(proj,iIter,redX2,varValV,delVarV)
-            sRes=compose("iteration %3.0f: reduced X^2 = %10.5f",[iIter redX2]);sFormat="%s";
+            sRes={compose("iteration %3.0f: reduced X^2 = %10.5f",[iIter redX2])};sFormat="%s";
             nVar=size(varValV,1);
             for iVar=1:nVar
                 resV=[varValV(iVar) delVarV(iVar)];
@@ -882,28 +882,28 @@ classdef Proj<handle
                 switch info.type
                     case 1
                         sResP=info.region.name;
-                        sResP=sResP+compose(": thick (nm) = %5.3f(%5.3f)",resV);
+                        sResP=[sResP compose(": thick (nm) = %5.3f(%5.3f)",resV)];
                         
                     case 2
                         sResP=info.phase.name;
-                        sResP=sResP+compose(": eta = %8.6f(%8.6f)",resV);
+                        sResP=[sResP compose(": eta = %8.6f(%8.6f)",resV)];
                         
                     case 3%'volume fraction'
-                        sResP=info.domain.region.name+", "+info.domain.phase.name;
-                        sResP=sResP+compose(": volFrac = %8.6f(%8.6f)",resV);
+                        sResP=[char(info.domain.region.name) ", " char(info.domain.phase.name)];
+                        sResP=[sResP compose(": volFrac = %8.6f(%8.6f)",resV)];
                         
                     case 4%'eta net'
                         sResP=compose("net: eta = %8.6f(%8.6f)",resV);
                 end
-                sRes=[sRes sResP];
-                sFormat=sFormat+"\n%s";
+                sRes{end+1}=sResP;
+                sFormat=[sFormat "\n%s"];
             end
-            sprintf(sFormat,sRes)
+            sprintf(sFormat,sRes{:})
         end
         
         %
         function proj=reportSweep(proj,sDesc,redX2,iSweepL)
-            sRes=sDesc+compose(", reduced X^2 = %10.5f",redX2);sFormat="%s";
+            sRes={[sDesc compose(", reduced X^2 = %10.5f",redX2)]};sFormat="%s";
             nSweep=size(iSweepL,1);
             for iSweep=1:nSweep
                 info=proj.sweepInfoL{iSweep};
@@ -912,20 +912,20 @@ classdef Proj<handle
                 switch info.type
                     case 1
                         sResP=info.region.name;
-                        sResP=sResP+compose(": thick (nm) = %5.3f",val);
+                        sResP=[sResP compose(": thick (nm) = %5.3f",val)];
                         
                     case 2
                         sResP=info.phase.name;
-                        sResP=sResP+compose(": eta = %8.6f",val);
+                        sResP=[sResP compose(": eta = %8.6f",val)];
                         
                     case 3%'volume fraction'
-                        sResP=info.domain.region.name+", "+info.domain.phase.name;
-                        sResP=sResP+compose(": volume = %8.6f",val);
+                        sResP=[char(info.domain.region.name) ", " char(info.domain.phase.name)];
+                        sResP=[sResP compose(": volume = %8.6f",val)];
                 end
-                sRes=[sRes sResP];
-                sFormat=sFormat+"\n%s";
+                sRes{end+1}=sResP;
+                sFormat=[sFormat "\n%s"];
             end
-            sprintf(sFormat,sRes)
+            sprintf(sFormat,sRes{:})
         end
         
         %Prepare sims for simulation

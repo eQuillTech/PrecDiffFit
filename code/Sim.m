@@ -62,25 +62,29 @@ classdef Sim<handle
                             H_refV=region.A_refM*domain.B_primM'*H_primV;
                             gV=region.B_refM'*H_refV;
                             
-                            useBeam=1;
-                            for iBeamSim=1:nBeamSim%check if already included
-                                Hp_refV=sim.H_refL(iBeamSim,:)';
-                                gpV=region.B_refM'*Hp_refV;
-                                dgV=gpV-gV;
-                                if norm(dgV)<1e-7
-                                    useBeam=0;
-                                    break;
-                                end
-                            end
-                            
-                            if ~useBeam
-                                continue
-                            end
-                            
                             if norm(gV)>sim.gMax+1e-8%truncation issue
                                 continue;
                             end
-                            
+
+                            %Check if beam is in included zones (cheap test first)
+                            inZone=false;
+                            for iZone=1:nZone
+                                if(abs(dot(H_refV,region.uvwZoneV)-diff.N_ZoneL(iZone))<1e-7)
+                                    inZone=true;
+                                end
+                            end
+                            if ~inZone
+                                continue
+                            end
+
+                            %check if already included (vectorized)
+                            if nBeamSim>0
+                                gSimM=sim.H_refL(1:nBeamSim,:)*region.B_refM;
+                                if any(sqrt(sum((gSimM-gV').^2,2))<1e-7)
+                                    continue
+                                end
+                            end
+
                             %{
                             sg=getExcErr(gV,diff.kV,const.nZ);
                             if(abs(sg)>sim.sgMax)
@@ -92,20 +96,10 @@ classdef Sim<handle
                             end
                             %}
                             
-                            %Check if beam is in included zones
-                            useBeam=0;
-                            for iZone=1:nZone
-                                if(abs(dot(H_refV,region.uvwZoneV)-diff.N_ZoneL(iZone))<1e-7)
-                                    useBeam=1;
-                                end
-                            end
-                            
                             %Add the beam to the lists
-                            if useBeam
-                                nBeamSim=nBeamSim+1;
-                                sim.H_refL(nBeamSim,:)=H_refV;
-                            end
-                            
+                            nBeamSim=nBeamSim+1;
+                            sim.H_refL(nBeamSim,:)=H_refV;
+
                         end
                     end
                 end
@@ -278,42 +272,20 @@ classdef Sim<handle
         
         %Fill out list of referenced structure factor list
         function sim=getDynH_refL(sim)
-            
-            nSimRef=size(sim.H_refL,1);
-            %nBeam=size(beamList,1);
-            sim.dynH_refL=[];
-            sim.dyn_luM=zeros(nSimRef,nSimRef);
-            nRef=0;
-            for ii=1:nSimRef
-                H_refVi=sim.H_refL(ii,:)';
-                for ji=1:nSimRef
-                    H_refVj=sim.H_refL(ji,:)';
-                    dH_refV=H_refVi-H_refVj;
-                    
-                    gV=sim.region.B_refM'*dH_refV;
-                    addRef=true;
-                    for iRef=1:nRef%check if already included
-                        Hp_refV=sim.dynH_refL(iRef,:)';
-                        gpV=sim.region.B_refM'*Hp_refV;
-                        dgV=gpV-gV;
-                        if norm(dgV)<1e-7
-                            addRef=false;
-                            ijRef=iRef;
-                            break;
-                        end
-                    end
-                    
-                    if(addRef)
-                        nRef=nRef+1;
-                        sim.dynH_refL(nRef,:)=dH_refV;
-                        ijRef=nRef;
-                    end
-                    sim.dyn_luM(ii,ji)=ijRef;
-                end
-            end
+            % Vectorized: unique difference vectors (first-occurrence order)
+            H=sim.H_refL;
+            nSimRef=size(H,1);
+            dHM=reshape(H,nSimRef,1,3)-reshape(H,1,nSimRef,3);%dHM(i,j,:)=H_i-H_j
+            dHL=reshape(dHM,nSimRef*nSimRef,3);
+            keyL=round(dHL*1e6)/1e6+0;%+0 removes negative zeros
+            [~,iFirst,iLabel]=unique(keyL,'rows','first');
+            [~,order]=sort(iFirst);
+            rank=zeros(size(order));
+            rank(order)=1:numel(order);
+            sim.dynH_refL=dHL(iFirst(order),:);
+            sim.dyn_luM=reshape(rank(iLabel),nSimRef,nSimRef);
         end
-        
-      %Fill out list of referenced structure factor list
+
         function sim=getDynH_refL2(sim)
             
             nSimRef=size(sim.H_refL,1);
@@ -431,22 +403,22 @@ classdef Sim<handle
                fStrong=nStrong/nBeams;
                fPert=+nPert/nBeams;
                fNegl=nNegl/nBeams;
-                sSumm=compose("total beam calculations: %6.0f",[nBeams]);sFormat="\n%s";
+                sSumm={compose("total beam calculations: %6.0f",[nBeams])};sFormat="\n%s";
                 
                 sSummP=compose("strong: %5.2f%%, perturbative: %5.2f%%, neglected: %5.2f%%",100*[fStrong fPert fNegl]);              
-                sSumm=[sSumm sSummP];
-                sFormat=sFormat+"\n%s";
+                sSumm{end+1}=sSummP;
+                sFormat=[sFormat "\n%s"];
 
                 nU=size(sim.dynH_refL,1);
                 sSummP=compose("structure factors: %6.0f",nU);              
-                sSumm=[sSumm sSummP];
-                sFormat=sFormat+"\n%s";
+                sSumm{end+1}=sSummP;
+                sFormat=[sFormat "\n%s"];
 
-               sprintf(sFormat,sSumm)          
+               sprintf(sFormat,sSumm{:})          
             else
                nBeams=size(sim.H_refL,1);
-               sSumm=compose("total beam calculations: %6.0f",[nBeams]);sFormat="\n%s";           
-               sprintf(sFormat,sSumm)          
+               sSumm={compose("total beam calculations: %6.0f",[nBeams])};sFormat="\n%s";           
+               sprintf(sFormat,sSumm{:})          
            end
           end
         
@@ -614,7 +586,7 @@ classdef Sim<handle
                 sim.img=sim.diff.plot(const,sim.region,sim.intensL,sim.H_refL,sim.lu_plotL);
             end 
             showFig=false;
-            if isvalid(gcf)
+            if ishghandle(gcf)
                 frontFigNum=get(gcf,'Number');
                 if frontFigNum~=sim.figNum
                     showFig=true;

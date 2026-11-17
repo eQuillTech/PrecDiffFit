@@ -85,71 +85,21 @@ classdef Expt<handle
             expt.intensL=[];
             expt.sigIL=[];
 
-            delimiter='\t';
-            startRow=2;
-
-            % Read columns of data as text:
-            formatSpec='%s%s%s%s%[^\n\r]';
-
-            % Open the text file.
-            fileID=fopen(expt.filename,'r');
-
-            % Read data.
-            dataArray=textscan(fileID, formatSpec,'Delimiter',delimiter,'TextType',...
-                'string','HeaderLines',startRow-1,'ReturnOnError',false,'EndOfLine', '\r\n');
-
-            % Close the text file.
-            fclose(fileID);
-
-            % Convert the contents of columns containing numeric text to numbers.
-            % Replace non-numeric text with NaN.
-            raw=repmat({''},length(dataArray{1}),length(dataArray)-1);
-            for col=1:length(dataArray)-1
-                raw(1:length(dataArray{col}),col)=mat2cell(dataArray{col},ones(length(dataArray{col}),1));
-            end
-            numericData=NaN(size(dataArray{1},1),size(dataArray,2));
-
-            for col=[1,2,3,4]
-                % Converts text in the input cell array to numbers. Replaced non-numeric
-                % text with NaN.
-                rawData=dataArray{col};
-                for row=1:size(rawData,1)
-                    % Create a regular expression to detect and remove non-numeric prefixes and
-                    % suffixes.
-                    regexstr='(?<prefix>.*?)(?<numbers>([-]*(\d+[\,]*)+[\.]{0,1}\d*[eEdD]{0,1}[-+]*\d*[i]{0,1})|([-]*(\d+[\,]*)*[\.]{1,1}\d+[eEdD]{0,1}[-+]*\d*[i]{0,1}))(?<suffix>.*)';
-                    try
-                        result=regexp(rawData(row), regexstr, 'names');
-                        numbers=result.numbers;
-
-                        % Detected commas in non-thousand locations.
-                        invalidThousandsSeparator=false;
-                        if numbers.contains(',')
-                            thousandsRegExp = '^\d+?(\,\d{3})*\.{0,1}\d*$';
-                            if isempty(regexp(numbers,thousandsRegExp,'once'))
-                                numbers=NaN;
-                                invalidThousandsSeparator = true;
-                            end
-                        end
-                        % Convert numeric text to numbers.
-                        if ~invalidThousandsSeparator
-                            numbers = textscan(char(strrep(numbers,',','')),'%f');
-                            numericData(row,col)=numbers{1};
-                            raw{row,col}=numbers{1};
-                        end
-                    catch
-                        raw{row,col}=rawData{row};
-                    end
+            % Read tab-delimited text (Octave-compatible), skipping the header row
+            txt=fileread(expt.filename);
+            lines=strsplit(strrep(txt,char(13),''),char(10));
+            lines=lines(2:end);
+            lines=lines(~cellfun(@(s) isempty(strtrim(s)),lines));
+            nL=numel(lines);
+            numericData=NaN(nL,4);
+            for row=1:nL
+                parts=strsplit(lines{row},char(9));
+                for col=1:min(4,numel(parts))
+                    numericData(row,col)=str2double(parts{col});
                 end
             end
-
-            dataTable=table;
-            dataTable.h=cell2mat(raw(:,1));
-            dataTable.k=cell2mat(raw(:,2));
-            dataTable.l=cell2mat(raw(:,3));
-            dataTable.intens=cell2mat(raw(:,4));
-
-            expt.H_refL=[dataTable.h dataTable.k dataTable.l];
-            expt.intensL=[dataTable.intens];%compose("(%5.1f %5.1f %5.1f):\t\t%2.4f",[HdataList' IdataList'])
+            expt.H_refL=numericData(:,1:3);
+            expt.intensL=numericData(:,4);
 
           % HrefDataL=HrefDataL';
              %%Check peaks
@@ -235,7 +185,7 @@ classdef Expt<handle
                expt.img=expt.diff.plot(const,expt.region,expt.intensL,expt.H_refL,expt.lu_plotL);
             end   
                 showFig=false;
-            if isvalid(gcf)
+            if ishghandle(gcf)
                 frontFigNum=get(gcf,'Number');
                 if frontFigNum~=expt.figNum
                     showFig=true;

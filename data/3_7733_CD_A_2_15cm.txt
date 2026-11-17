@@ -1,0 +1,91 @@
+h	k	l	intens	status
+1.5	-1.5	-4.5	1573.28		Iters: 111, No dependence on shape
+2	-2	-4	515432		Iters: 111
+2.5	-2.5	-3.5	9608.49		Iters: 111, No dependence on shape
+-0.5	0.5	-4.5	2971.36		Iters: 111, No dependence on shape
+0	0	-4	909384		Iters: 111
+0.5	-0.5	-3.5	10939		Iters: 111
+1	-1	-3	723071		Iters: 111
+1.5	-1.5	-2.5	14330		Iters: 111, No dependence on shape
+2	-2	-2	858473		Iters: 111
+2.5	-2.5	-1.5	7240.11		Iters: 111, No dependence on shape
+3	-3	-1	608211		Iters: 111
+3.5	-3.5	-0.5	6005.71		Iters: 111, No dependence on shape
+-2	2	-4	515993		Iters: 111
+-1.5	1.5	-3.5	11594		Iters: 111
+-1	1	-3	737855		Iters: 111
+-0.5	0.5	-2.5	19343		Iters: 111
+0	0	-2	472529		Iters: 111, No dependence on shape
+0.5	-0.5	-1.5	14357.7		Iters: 111, No dependence on shape
+1	-1	-1	452546		Iters: 111, No dependence on shape
+1.5	-1.5	-0.5	12370.3		Iters: 111, No dependence on shape
+2	-2	0	577982		Iters: 111, No dependence on shape
+2.5	-2.5	0.5	12461.6		Iters: 111, No dependence on shape
+3	-3	1	806032		Iters: 111
+-2.5	2.5	-2.5	3086.71		Iters: 111, No dependence on shape
+-2	2	-2	729568		Iters: 111
+-1.5	1.5	-1.5	2404.53		Iters: 111
+-1	1	-1	847236		Iters: 111
+-0.5	0.5	-0.5	22720.1		Iters: 111, No dependence on shape
+0	0	0	3.22376e+06		Iters: 111
+0.5	-0.5	0.5	23684.9		Iters: 111, No dependence on shape
+1	-1	1	583279		Iters: 111, No dependence on shape
+1.5	-1.5	1.5	14829.5		Iters: 111, No dependence on shape
+2	-2	2	517543		Iters: 111, No dependence on shape
+2.5	-2.5	2.5	3060.4		Iters: 111, No dependence on shape
+3	-3	3	366801		Iters: 111
+-3	3	-1	554894		Iters: 111
+-2.5	2.5	-0.5	7358.53		Iters: 111, No dependence on shape
+-2	2	0	506306		Iters: 111, No dependence on shape
+-1.5	1.5	0.5	9702.95		Iters: 111, No dependence on shape
+-1	1	1	607704		Iters: 111, No dependence on shape
+-0.5	0.5	1.5	12111.5		Iters: 111, No dependence on shape
+0	0	2	603432		Iters: 111
+0.5	-0.5	2.5	19158.3		Iters: 111
+1	-1	3	626214		Iters: 111
+1.5	-1.5	3.5	12806.9		Iters: 111, No dependence on shape
+2	-2	4	769171		Iters: 111
+-3.5	3.5	0.5	5408.91		Iters: 111, No dependence on shape
+-3	3	1	860330		Iters: 111
+-2.5	2.5	1.5	10009.8		Iters: 111, No dependence on shape
+-2	2	2	444068		Iters: 111, No dependence on shape
+-1.5	1.5	2.5	9620.17		Iters: 111, No dependence on shape
+-1	1	3	552407		Iters: 111
+-0.5	0.5	3.5	13892.8		Iters: 111, No dependence on shape
+0	0	4	937116		Iters: 111
+0.5	-0.5	4.5	5451.15		Iters: 111, No dependence on shape
+1	-1	5	639341		Iters: 111
+-2.5	2.5	3.5	6813.1		Iters: 111, No dependence on shape
+-2	2	4	707602		Iters: 111
+-1.5	1.5	4.5	6373.74		Iters: 111, No dependence on shape
+-1	1	5	596100		Iters: 111
+-1.5	1.5	-4.5	984.79		Iters: 111, No dependence on shape
+-2.5	2.5	-3.5	2741.81		Iters: 111, No dependence on shape
+0.5	-0.5	-4.5	371.425		Iters: 111
+-0.5	0.5	-3.5	2310.79		Iters: 111, No dependence on shape
+-1.5	1.5	-2.5	3884.77		Iters: 111, No dependence on shape
+-2.5	2.5	-1.5	1989.07		Iters: 111
+-3.5	3.5	-0.5	2546.8		Iters: 111, No dependence on shape
+1.5	-1.5	-3.5	1290.97		Iters: 111
+0.5	-0.5	-2.5	2369.57		Iters: 111
+-0.5	0.5	-1.5	2454.72		Iters: 111, No dependence on shape
+-1.5	1.5	-0.5	10772.7		Iters: 111, No dependence on shape
+-2.5	2.5	0.5	1940.33		Iters: 111
+2.5	-2.5	-2.5	8601.99		Iters: 111, No dependence on shape
+1.5	-1.5	-1.5	1812.91		Iters: 111
+0.5	-0.5	-0.5	4392.78		Iters: 111, No dependence on shape
+-0.5	0.5	0.5	2005.34		Iters: 111
+-1.5	1.5	1.5	2050.94		Iters: 111
+-2.5	2.5	2.5	3419.71		Iters: 111, No dependence on shape
+2.5	-2.5	-0.5	2201.88		Iters: 111
+1.5	-1.5	0.5	2316.58		Iters: 111
+0.5	-0.5	1.5	22920.3		Iters: 111
+-0.5	0.5	2.5	3653.54		Iters: 111
+-1.5	1.5	3.5	11375.3		Iters: 111, No dependence on shape
+3.5	-3.5	0.5	5780.24		Iters: 111, No dependence on shape
+2.5	-2.5	1.5	4070.12		Iters: 111
+1.5	-1.5	2.5	3919.29		Iters: 111
+0.5	-0.5	3.5	2529.75		Iters: 111
+-0.5	0.5	4.5	6871.06		Iters: 111, No dependence on shape
+2.5	-2.5	3.5	3632.5		Iters: 111, No dependence on shape
+1.5	-1.5	4.5	5258.65		Iters: 111, No dependence on shape

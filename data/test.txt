@@ -1,0 +1,12 @@
+h	k	l	intens	notes
+0	0	0	420490	Iterations: 391
+1	-1	-1	145762	Iterations: 391
+1	-1	1	167510	Iterations: 391
+-1	1	-1	130980	Iterations: 391
+-1	1	1	179831	Iterations: 391
+0	0	-2	153845	Iterations: 391
+0	0	2	129661	Iterations: 391
+0.5	-0.5	0.5	5214.67	Iterations: 391
+0.5	-0.5	-0.5	7619.49	Iterations: 391
+-0.5	0.5	0.5	6496.07	Iterations: 391
+-0.5	0.5	-0.5	4804.35	Iterations: 391
