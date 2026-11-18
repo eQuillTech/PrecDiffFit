@@ -1,5 +1,6 @@
 classdef Expt<handle
    properties
+        uid=[];%unique id for isSame()
 	name=                       '';
 	filename=                   '';             
 	H_refL=                     [];

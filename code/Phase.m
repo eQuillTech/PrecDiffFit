@@ -1,5 +1,6 @@
 classdef Phase<handle
    properties
+        uid=[];%unique id for isSame()
 	name='';
 	A_primM=[];%Not rotated
     basis;

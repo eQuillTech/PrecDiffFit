@@ -52,7 +52,7 @@ classdef Proj<handle
                 newExpt=true;
                 nExpt=size(L,1);
                 for iExpt=1:nExpt
-                    if isequal(expt,L{iExpt})
+                    if isSame(expt,L{iExpt})
                         newExpt=false;
                         break;
                     end
@@ -73,7 +73,7 @@ classdef Proj<handle
                 newSim=true;
                 nSim=size(simL,1);
                 for iSim=1:nSim
-                    if isequal(sim,simL{iSim})
+                    if isSame(sim,simL{iSim})
                         newSim=false;
                         break;
                     end
@@ -97,7 +97,7 @@ classdef Proj<handle
                     newPhase=true;
                     phase=region.domainL{iDomain}.phase;
                     for iPhase=1:nPhase
-                        if isequal(phase,L{iPhase})
+                        if isSame(phase,L{iPhase})
                             newPhase=false;
                             break;
                         end
@@ -119,7 +119,7 @@ classdef Proj<handle
                 nRegion=size(L,1);
                 newRegion=true;
                 for iRegion=1:nRegion
-                    if isequal(region,L{iRegion})
+                    if isSame(region,L{iRegion})
                         newRegion=false;
                         break;
                     end
@@ -143,7 +143,7 @@ classdef Proj<handle
                     newDomain=true;
                     domain=region.domainL{iDomain};
                     for iDomain=1:nDomain
-                        if isequal(domain,L{iDomain})
+                        if isSame(domain,L{iDomain})
                             newDomain=false;
                             break;
                         end
@@ -164,7 +164,7 @@ classdef Proj<handle
             nSim=size(proj.simL,1);
             for iSim=1:nSim
                 sim=simL{iSim};
-                if isequal(region,sim.region)
+                if isSame(region,sim.region)
                     simL_usingRegion{nSim_usingRegion+1,1}=sim;
                 end
             end
@@ -178,7 +178,7 @@ classdef Proj<handle
                 phaseL=simL{iSim}.region.phaseL();
                 nPhase=size(phaseL,1);
                 for iPhase=1:nPhase
-                    if isequal(phase,phaseL{iPhase})
+                    if isSame(phase,phaseL{iPhase})
                         nSim_usingPhase=size(simL_usingPhase,1);
                         simL_usingPhase{nSim_usingPhase+1,1}=simL{iSim};
                     end
@@ -194,7 +194,7 @@ classdef Proj<handle
                 domainL=simL{iSim}.region.domainL;
                 nDomain=size(domainL,1);
                 for iDomain=1:nDomain
-                    if isequal(domain,domainL{iDomain})
+                    if isSame(domain,domainL{iDomain})
                         nSim_usingDomain=size(simL_usingDomain,1);
                         simL_usingDomain{nSim_usingDomain+1,1}=simL{iSim};
                     end
@@ -416,7 +416,7 @@ classdef Proj<handle
             jPar=0;
             for iPar=1:nPar
                 parDesc=proj.parL{iPar};
-                info={};
+                info=struct();
                 foundPar=false;
                 switch parDesc{1}
                     case 'thickness'
@@ -479,7 +479,7 @@ classdef Proj<handle
             for iVar=1:nVar
                 varDesc=proj.varL{iVar,1};
                 foundVar=false;
-                info={};
+                info=struct();
                 switch varDesc{1,1}
                     case 'thickness'
                         info.type=1;
@@ -531,7 +531,7 @@ classdef Proj<handle
             jConstr=0;
             for iConstr=1:nConstr
                 constrDesc=proj.constrL{iConstr};
-                info={};
+                info=struct();
                 foundVar=false;
                 switch constrDesc{1}
                     case 'eta equal'
@@ -541,7 +541,7 @@ classdef Proj<handle
                         [foundPhase1 info.phase1]=proj.findPhase(phase1Name);
                         [foundPhase2 info.phase2]=proj.findPhase(phase2Name);
                         if foundPhase1&&foundPhase2
-                            if ~isequal(info.phase1,info.phase2)
+                            if ~isSame(info.phase1,info.phase2)
                                 foundVar=true;
                             end
                         end
@@ -580,7 +580,7 @@ classdef Proj<handle
             jSweep=0;
             for iSweep=1:nSweep
                 sweepDesc=proj.sweepL{iSweep};
-                info={};
+                info=struct();
                 foundSweep=false;
                 switch sweepDesc{1}
                     case 'thickness'
@@ -811,6 +811,9 @@ classdef Proj<handle
             delVarV=zeros(nVar,1);
             for iVar=1:nVar
                 for iPar=1:nPar
+                    if JM(iVar,iPar)==0%avoids 0*Inf=NaN for parameters with undefined error
+                        continue
+                    end
                     delVarV(iVar)=(delVarV(iVar)^2+(JM(iVar,iPar)*delParV(iPar))^2)^0.5;
                 end
             end
@@ -1093,6 +1096,9 @@ classdef Proj<handle
                     delParV=sqrt(diag(iCovarM));
                     
                     %Find variable errors
+                    %Finite-difference step must be nonzero (a parameter with no effect gets a zero step)
+                    smallStep=abs(dParV)<parTolV;
+                    dParV(smallStep)=parTolV(smallStep);
                     delVarV=proj.getDelVarV(parValV,dParV,delParV);
                     
                     %Report iteration

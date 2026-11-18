@@ -1,5 +1,6 @@
 classdef Sim<handle
     properties
+        uid=[];%unique id for isSame()
         name;
         region;
         diff;

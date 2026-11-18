@@ -1,5 +1,6 @@
 classdef Domain<handle
    properties
+        uid=[];%unique id for isSame()
       region;
       phase;
       relVol;

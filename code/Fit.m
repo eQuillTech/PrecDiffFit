@@ -248,9 +248,9 @@ classdef Fit<handle
                     sim.figNum=get(gcf,'Number');
                     expt=fit.expt;
                     if ~isempty(expt.fig)
-                        simPos=expt.fig.Position;
+                        simPos=get(expt.fig,'Position');
                         simPos(1)=simPos(1)+simPos(3);
-                        sim.fig.Position=simPos;
+                        set(sim.fig,'Position',simPos);
                     end
                 end
                 sim.plot(const);

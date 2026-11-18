@@ -1,5 +1,6 @@
 classdef Region<handle
     properties
+        uid=[];%unique id for isSame()
         name='';
         domainL=[];
         A_refM=[];
