@@ -150,10 +150,10 @@ proj.addFit(fit1);%.addFit(fit2);
 proj.parL=                  {
                             {'thickness';'Region 1'}
                             %{'thickness';'Region 2'}
-                            {'eta';'AlInP variant R'}
+                            %{'eta';'AlInP variant R'}
                             %{'eta';'AlInP variant L'}
                             %{'volume';'Region 1';'Matrix'}
-                            {'volume';'Region 1';'AlInP variant R'}
+                            %{'volume';'Region 1';'AlInP variant R'}
                             %{'volume';'Region 2';'AlInP variant R'}
                             };
 
@@ -168,10 +168,10 @@ proj.constrL=                {
 %(Un)comment items from list below to specify which variables to report as text.
 proj.varL=                  {
                             {'thickness';'Region 1'}
-                            {'eta';'AlInP variant R'}
+                            %{'eta';'AlInP variant R'}
                             %{'eta';'AlInP variant L'}
                             %{'volume fraction';'Matrix'}
-                            {'volume fraction';'Region 1';'AlInP variant R'}
+                            %{'volume fraction';'Region 1';'AlInP variant R'}
                             %{'volume fraction';'Region 1';'AlInP variant L'}
                             {'eta net'}
                             };
